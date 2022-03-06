@@ -17,102 +17,102 @@ export interface RelatedLinksItem {
 
 // Match → title and url
 type RuleItem<T extends RegExpMatchArray = RegExpMatchArray> = {
-    match: (item: JserItem) => T | null;
-    // title: ({ item, match }: { item: JserItem; match: T }) => string;
-    url: ({ item, match }: { item: JserItem; match: T }) => string;
+    match: (url: string) => T | null;
+    // title: ({ item, match }: { url: string; match: T }) => string;
+    url: ({ url, match }: { url: string; match: T }) => string;
 };
 const URL_RULES: RuleItem[] = [
     // GitHub
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/github\.com\/(?<owner>[-\w]+)\/(?<name>[-\w]+)/);
+        match: (url: string) => {
+            return url.match(/https:\/\/github\.com\/(?<owner>[-\w]+)\/(?<name>[-\w]+)/);
         },
         url: ({ match }) => match[0]
     },
     // Google+
     // https://plus.google.com/u/0/103969044621963378195/posts/af6Fg972tGQ
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/plus\.google\.com\/\/u\/0\/(?<owner>[-\w]+)/);
+        match: (url: string) => {
+            return url.match(/https:\/\/plus\.google\.com\/\/u\/0\/(?<owner>[-\w]+)/);
         },
         url: ({ match }) => match[0]
     },
     // Google Group
     // https://groups.google.com/forum/#!msg/node-webkit/x7kYuDO0Cj8/cIxoJ6RFiLsJ
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/groups\.google\.com\/forum\/#!msg\/(?<owner>[-\w]+)/);
+        match: (url: string) => {
+            return url.match(/https:\/\/groups\.google\.com\/forum\/#!msg\/(?<owner>[-\w]+)/);
         },
         url: ({ match }) => match[0]
     },
     // Google Group
     // https://groups.google.com/a/chromium.org/g/blink-dev/c/WXNzM0WiQ-s/m/l10NGhaoAQAJ
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/groups\.google\.com\/g\/(?<owner>[-\w]+)/);
+        match: (url: string) => {
+            return url.match(/https:\/\/groups\.google\.com\/g\/(?<owner>[-\w]+)/);
         },
         url: ({ match }) => match[0]
     },
     // Google Group
     // https://groups.google.com/a/chromium.org/g/blink-dev/c/WXNzM0WiQ-s/m/l10NGhaoAQAJ
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/groups\.google\.com\/a\/(?<owner>[-\w]+)\/g\/(?<name>[-\w]+)/);
+        match: (url: string) => {
+            return url.match(/https:\/\/groups\.google\.com\/a\/(?<owner>[-\w]+)\/g\/(?<name>[-\w]+)/);
         },
         url: ({ match }) => match[0]
     },
     // Zenn
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/zenn\.dev\/(?<name>[-\w]+)\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/zenn\.dev\/(?<name>[-\w]+)\//);
         },
         url: ({ match }) => match[0]
     },
     // qiita
     // https://qiita.com/koedamon/items/3e64612d22f3473f36a4
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/qiita\.com\/(?<name>[-\w]+)\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/qiita\.com\/(?<name>[-\w]+)\//);
         },
         url: ({ match }) => match[0]
     },
     // Note
     // https://note.com/takamoso/n/n32c4e6904cf7
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/note\.com\/(?<name>[-\w+])\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/note\.com\/(?<name>[-\w+])\//);
         },
         url: ({ match }) => match[0]
     },
     // Medium
     // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/medium\.com\/(?<name>[-@\w]+)\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/medium\.com\/(?<name>[-@\w]+)\//);
         },
         url: ({ match }) => match[0]
     },
     // https://dev.to
     // https://dev.to/voraciousdev/a-practical-guide-to-the-web-cryptography-api-4o8n
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/dev\.to\/(?<name>[-\w]+)\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/dev\.to\/(?<name>[-\w]+)\//);
         },
         url: ({ match }) => match[0]
     },
     // speakerdeck
     // https://speakerdeck.com/jmblog
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/speakerdeck\.com\/(?<name>[-\w]+)\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/speakerdeck\.com\/(?<name>[-\w]+)\//);
         },
         url: ({ match }) => match[0]
     },
     // slideshare
     // https://www2.slideshare.net/techblogyahoo
     {
-        match: (item: JserItem) => {
-            return item.url.match(/https:\/\/(www\d)\.slideshare\.net\/(?<name>[-\w]+)\//);
+        match: (url: string) => {
+            return url.match(/https:\/\/(www\d)\.slideshare\.net\/(?<name>[-\w]+)\//);
         },
         url: ({ match }) => match[0]
     }
@@ -126,16 +126,16 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
         return previous;
     }, {} as Record<K, T[]>);
 
-const getUniqueUrl = (item: JserItem) => {
+const getUniqueUrl = (url: string) => {
     for (const rule of URL_RULES) {
-        const matchRule = rule.match(item);
+        const matchRule = rule.match(url);
         if (matchRule) {
-            return rule.url({ item, match: matchRule });
+            return rule.url({ url, match: matchRule });
         }
     }
     // default
-    const url = new URL(item.url);
-    return url.origin;
+    const urlObject = new URL(url);
+    return urlObject.origin;
 }
 const patternMatch = (str: string, regexps: RegExp[]) => {
     for (const regExp of regexps) {
@@ -192,7 +192,7 @@ const getProductName = (releaseNotes: JserItem[]) => {
     const sortedProductByCount = [...productRC.entries()].sort((a, b) => b[1] - a[1]);
     return sortedProductByCount?.[0]?.[0];
 };
-serve(async (_req) => {
+serve(async (req) => {
     console.log("Listening on http://localhost:8000");
     const fetchItems = (): Promise<JserItem[]> => {
         return fetch("https://jser.info/source-data/items.json")
@@ -206,15 +206,24 @@ serve(async (_req) => {
     const items = await fetchItems();
     const allReleaseNotes = items.filter(item => item.tags?.includes("ReleaseNote"));
     const groupByReleaseNote = groupBy(allReleaseNotes, item => {
-        return getUniqueUrl(item);
+        return getUniqueUrl(item.url);
     });
-    const p = Object.entries(groupByReleaseNote).map(([origin, releaseNotes]) => {
+    const allNames = Object.entries(groupByReleaseNote).map(([origin, releaseNotes]) => {
         return {
             name: getProductName(releaseNotes),
             url: origin
         };
     }).filter(p => Boolean(p.name));
-    return new Response(JSON.stringify(p), {
-        headers: { "content-type": "application/json" },
-    });
+    const targetUrl = new URL(req.url).searchParams.get("url");
+    if (targetUrl) {
+        const targetSearchUrl = getUniqueUrl(targetUrl);
+        const targetProduct = allNames.find(product => targetSearchUrl === product.url);
+        return new Response(JSON.stringify(targetProduct), {
+            headers: { "content-type": "application/json" },
+        });
+    } else {
+        return new Response(JSON.stringify(allNames), {
+            headers: { "content-type": "application/json" },
+        });
+    }
 });
