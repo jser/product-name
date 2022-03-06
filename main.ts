@@ -29,6 +29,14 @@ const URL_RULES: RuleItem[] = [
         },
         url: ({ match }) => match[0]
     },
+    // Google+
+    // https://plus.google.com/u/0/103969044621963378195/posts/af6Fg972tGQ
+    {
+        match: (item: JserItem) => {
+            return item.url.match(/https:\/\/plus\.google\.com\/\/u\/0\/(?<owner>[-\w]+)/);
+        },
+        url: ({ match }) => match[0]
+    },
     // Google Group
     // https://groups.google.com/forum/#!msg/node-webkit/x7kYuDO0Cj8/cIxoJ6RFiLsJ
     {
@@ -152,7 +160,6 @@ const getProductName = (releaseNotes: JserItem[]) => {
             // Pure 0.6.0-rc-1リリース。
             // jQuery UI 1.13.0-rc.2リリース
             /(?<Product>.*?)\s?(?<Version>v?[\d.]{1,12}[-\s]?(!?RC|β|α|beta|alpha)[-\s.]?\d+)\s?リリース/i,
-            //
             // Nightwatch v2.0-alphaリリース
             /(?<Product>.*?)\s?(?<Version>v?[\d.]{1,12}[-\s]?(!?RC|ベータ|アルファ|β|α|beta|alpha))\s?リリース/i,
             // jQuery 1.0.0リリース
