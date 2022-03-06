@@ -41,7 +41,7 @@ const patternMatch = (str: string, regexps: RegExp[]) => {
     }
     return null;
 }
-const getPhase = (releaseNotes: JserItem[]) => {
+const getProductName = (releaseNotes: JserItem[]) => {
     const productRC = new Map<string, number>()
     const maxTry = Math.min(releaseNotes.length, 10);
     for (let i = 0; i < maxTry; i++) {
@@ -97,9 +97,12 @@ serve(async (_req) => {
     const groupByReleaseNote = groupBy(allReleaseNotes, item => {
         return getUniqueUrl(item.url);
     });
-    const p = Object.values(groupByReleaseNote).map(releaseNotes => {
-        return getPhase(releaseNotes);
-    }).filter(Boolean);
+    const p = Object.entries(groupByReleaseNote).map(([url, releaseNotes]) => {
+        return {
+            name: getProductName(releaseNotes),
+            url
+        };
+    }).filter(p => Boolean(p.name));
     return new Response(JSON.stringify(p), {
         headers: { "content-type": "application/json" },
     });
