@@ -15,7 +15,7 @@ export interface RelatedLinksItem {
     url: string;
 }
 
-// Match →　title and url
+// Match → title and url
 type RuleItem<T extends RegExpMatchArray = RegExpMatchArray> = {
     match: (item: JserItem) => T | null;
     // title: ({ item, match }: { item: JserItem; match: T }) => string;
@@ -169,11 +169,7 @@ const getProductName = (releaseNotes: JserItem[]) => {
             const product = match.groups?.Product as string;
             // ~ である<Product>
             // ~<Product>
-            let stop = false
-            console.log("&: ", product);
-            console.log(">>>>>>>>", firstLine);
-            console.log(">>>>>>>>", match.regExp);
-            console.log(">>>>>>>>", releaseNotes[0]);
+            let stop = false;
             const productWithoutLead = product.split(/\b/).reverse().reduce((t, w) => {
                 if (stop) {
                     return t;
@@ -183,7 +179,11 @@ const getProductName = (releaseNotes: JserItem[]) => {
                 }
                 stop = true;
                 return t;
-            }, "").trim()
+            }, "").trim();
+
+            console.log("&:", productWithoutLead);
+            console.log(">>>>>>>>", firstLine);
+            console.log(">>>>>>>>", match.regExp);
             productRC.set(productWithoutLead, (productRC.get(productWithoutLead) ?? 0) + 1)
         } else {
             // console.log("||||||||||||", firstLine);
@@ -193,6 +193,7 @@ const getProductName = (releaseNotes: JserItem[]) => {
     return sortedProductByCount?.[0]?.[0];
 };
 serve(async (_req) => {
+    console.log("Listening on http://localhost:8000");
     const fetchItems = (): Promise<JserItem[]> => {
         return fetch("https://jser.info/source-data/items.json")
             .then(res => {

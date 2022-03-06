@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "deno.window"
+    ],
+    "strict": true
+  },
+  "lint": {
+    "files": {
+      "include": [
+        "main.ts",
+        "src/"
+      ]
+    },
+    "rules": {
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": [
+        "*.ts"
+      ]
+    },
+    "options": {
+      "useTabs": false,
+      "lineWidth": 100,
+      "indentWidth": 4,
+      "singleQuote": false,
+      "proseWrap": "always"
+    }
+  }
+}
