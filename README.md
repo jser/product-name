@@ -32,7 +32,7 @@ No Data
 
 ```shell
 $ curl "https://jser-product-name.deno.dev/?url=https://example.com
-# empty
+null # status code is 400
 ```
 
 ## Related
