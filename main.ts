@@ -149,8 +149,10 @@ const getProductName = (releaseNotes: JserItem[]) => {
         const firstLine = randomElement.content.split(/\n/)[0]
         // strict > loose
         const match = patternMatch(firstLine, [
-            //  Pure 0.6.0-rc-1リリース。
-            /(?<Product>.*?)\s?(?<Version>v?[\d.]{1,12}[-\s]?(!?RC|β|α|beta|alpha)[-\s]?\d+)\s?リリース/i,
+            // Pure 0.6.0-rc-1リリース。
+            // jQuery UI 1.13.0-rc.2リリース
+            /(?<Product>.*?)\s?(?<Version>v?[\d.]{1,12}[-\s]?(!?RC|β|α|beta|alpha)[-\s.]?\d+)\s?リリース/i,
+            //
             // Nightwatch v2.0-alphaリリース
             /(?<Product>.*?)\s?(?<Version>v?[\d.]{1,12}[-\s]?(!?RC|ベータ|アルファ|β|α|beta|alpha))\s?リリース/i,
             // jQuery 1.0.0リリース
