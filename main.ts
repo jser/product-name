@@ -100,7 +100,7 @@ serve(async (_req) => {
     const p = Object.values(groupByReleaseNote).map(releaseNotes => {
         return getPhase(releaseNotes);
     }).filter(Boolean);
-    return new Response(JSON.stringiy(p), {
+    return new Response(JSON.stringify(p), {
         headers: { "content-type": "application/json" },
     });
 });
