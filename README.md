@@ -28,6 +28,13 @@ $ curl "https://jser-product-name.deno.dev/?url=https://deno.com/blog/v1.19"
 {"name":"Deno","url":"https://deno.com"}
 ```
 
+No Data
+
+```shell
+$ curl "https://jser-product-name.deno.dev/?url=https://example.com
+# empty
+```
+
 ## Related
 
 - [jser/dataset: JSer.infoのデータセットや処理ライブラリ](https://github.com/jser/dataset)
