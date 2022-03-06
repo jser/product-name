@@ -26,8 +26,11 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
 const getUniqueUrl = (urlS: string) => {
     const url = new URL(urlS);
     const host = url.host;
-    const repo = url.pathname.split("/").slice(0, 2).join("/");
-    return host === "github.com" ? host + repo : host;
+    if (host === "github.com") {
+        const repo = url.pathname.split("/").slice(0, 3).join("/");
+        return host + repo;
+    }
+    return host;
 }
 const patternMatch = (str: string, regexps: RegExp[]) => {
     for (const regExp of regexps) {
@@ -97,10 +100,10 @@ serve(async (_req) => {
     const groupByReleaseNote = groupBy(allReleaseNotes, item => {
         return getUniqueUrl(item.url);
     });
-    const p = Object.entries(groupByReleaseNote).map(([url, releaseNotes]) => {
+    const p = Object.entries(groupByReleaseNote).map(([host, releaseNotes]) => {
         return {
             name: getProductName(releaseNotes),
-            url
+            url: `https://${host}`
         };
     }).filter(p => Boolean(p.name));
     return new Response(JSON.stringify(p), {
