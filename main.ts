@@ -100,7 +100,7 @@ serve(async (_req) => {
     const p = Object.values(groupByReleaseNote).map(releaseNotes => {
         return getPhase(releaseNotes);
     }).filter(Boolean);
-    return new Response("Hello World!", {
-        headers: { "content-type": "text/plain" },
+    return new Response(p, {
+        headers: { "content-type": "application/json" },
     });
 });
