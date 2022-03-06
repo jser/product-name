@@ -218,7 +218,7 @@ serve(async (req) => {
     if (targetUrl) {
         const targetSearchUrl = getUniqueUrl(targetUrl);
         const targetProduct = allNames.find(product => targetSearchUrl === product.url);
-        return new Response(JSON.stringify(targetProduct), {
+        return new Response(JSON.stringify(targetProduct ?? {}), {
             headers: { "content-type": "application/json" },
         });
     } else {
