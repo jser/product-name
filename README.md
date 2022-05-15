@@ -2,6 +2,13 @@
 
 Tiny API that provide product/library name for a URL.
 
+## Response
+
+- name: product name
+- url: product url
+- releaseNoteProbability: Is this release note. 
+    - 0 - 1
+
 ## Usage
 
 Supported All products.
