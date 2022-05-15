@@ -180,10 +180,6 @@ const getProductName = (releaseNotes: JserItem[]) => {
                 stop = true;
                 return t;
             }, "").trim();
-
-            console.log("&:", productWithoutLead);
-            console.log(">>>>>>>>", firstLine);
-            console.log(">>>>>>>>", match.regExp);
             productRC.set(productWithoutLead, (productRC.get(productWithoutLead) ?? 0) + 1)
         } else {
             // console.log("||||||||||||", firstLine);
@@ -204,14 +200,16 @@ serve(async (req) => {
             })
     }
     const items = await fetchItems();
-    const allReleaseNotes = items.filter(item => item.tags?.includes("ReleaseNote"));
-    const groupByReleaseNote = groupBy(allReleaseNotes, item => {
+    const groupByUrl = groupBy(items, item => {
         return getUniqueUrl(item.url);
     });
-    const allNames = Object.entries(groupByReleaseNote).map(([origin, releaseNotes]) => {
+    const allNames = Object.entries(groupByUrl).map(([origin, items]) => {
+        const releaseNotes = items.filter(item => item.tags?.includes("ReleaseNote"))
+        const releaseNoteProbability = (releaseNotes.length / items.length) || 0;
         return {
             name: getProductName(releaseNotes),
-            url: origin
+            url: origin,
+            releaseNoteProbability
         };
     }).filter(p => Boolean(p.name));
     const targetUrl = new URL(req.url).searchParams.get("url");
