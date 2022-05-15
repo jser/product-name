@@ -189,7 +189,6 @@ const getProductName = (releaseNotes: JserItem[]) => {
     return sortedProductByCount?.[0]?.[0];
 };
 serve(async (req) => {
-    console.log("Listening on http://localhost:8000");
     const fetchItems = (): Promise<JserItem[]> => {
         return fetch("https://jser.info/source-data/items.json")
             .then(res => {
