@@ -6,7 +6,7 @@ Tiny API that provide product/library name for a URL.
 
 - name: product name
 - url: product url
-- releaseNoteProbability: Is this release note?
+- releaseNoteProbability: Do this url have release notes?
     - 0 - 1
 
 ## Usage
