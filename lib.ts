@@ -80,7 +80,7 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
     {
         matchVersion: (url: string) => {
             return url.match(
-                /https:\/\/deno\.com\/blog\/v(?<version>.+)/
+                /https:\/\/deno\.com\/blog\/v(?<version>[\d.]+)/
             );
         },
         version: ({ match }) => `v${match?.groups?.version}`,
