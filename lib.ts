@@ -212,7 +212,7 @@ export const URL_RULES: RuleItem[] = [
     //
 ];
 
-const groupBy = <T, K extends keyof unknown>(list: T[], getKey: (item: T) => K) =>
+const groupBy = <T, K extends keyof Record<string, unknown>>(list: T[], getKey: (item: T) => K) =>
     list.reduce((previous, currentItem) => {
         const group = getKey(currentItem);
         if (!previous[group]) previous[group] = [];
