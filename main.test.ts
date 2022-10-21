@@ -1,5 +1,5 @@
-import { assert, assertEquals, fail } from "https://deno.land/std@0.130.0/testing/asserts.ts";
-import { getProductName, getReleaseNoteVersion, RELEASE_RULE } from "./lib.ts";
+import { assert, assertStrictEquals } from "https://deno.land/std@0.130.0/testing/asserts.ts";
+import { getProductName, RELEASE_RULE } from "./lib.ts";
 
 Deno.test("getProductName - {name} {ver}リリース", () => {
     const name = getProductName([
@@ -21,7 +21,7 @@ Deno.test("getProductName - {name} {ver}リリース", () => {
             relatedLinks: [],
         },
     ]);
-    assertEquals(name, "Nuxt");
+    assertStrictEquals(name, "Nuxt");
 });
 Deno.test("getProductName - {name} {ver}-alpha|betaリリース", () => {
     const name = getProductName([
@@ -35,7 +35,7 @@ Deno.test("getProductName - {name} {ver}-alpha|betaリリース", () => {
             relatedLinks: [],
         },
     ]);
-    assertEquals(name, "Nightwatch");
+    assertStrictEquals(name, "Nightwatch");
 });
 Deno.test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
     const name = getProductName([
@@ -49,17 +49,21 @@ Deno.test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
             relatedLinks: [],
         },
     ]);
-    assertEquals(name, "jQuery UI");
+    assertStrictEquals(name, "jQuery UI");
 });
 
 Deno.test("RELEASE_RULE data", async (t) => {
     for (const rule of RELEASE_RULE) {
         for (const test of rule.tests) {
-            await t.step(test.input + " → " + test.output, async (t) => {
+            await t.step(test.input + " → " + test.output, () => {
                 const matchRule = rule.matchVersion?.(test.input);
+                if (test.output === undefined) {
+                    assertStrictEquals(matchRule, null);
+                    return;
+                }
                 assert(matchRule, "should be matched: " + JSON.stringify(rule));
                 const result = rule.version?.({ url: test.input, match: matchRule });
-                assertEquals(result, test.output);
+                assertStrictEquals(result, test.output);
             });
         }
     }

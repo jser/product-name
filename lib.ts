@@ -23,10 +23,10 @@ type RuleItem<T extends RegExpMatchArray = RegExpMatchArray> = ({
 type ReleaseRuleItem<T extends RegExpMatchArray = RegExpMatchArray> = {
     matchVersion: (url: string) => T | null;
     version: ({ url, match }: { url: string; match: T }) => string | undefined;
-    tests: [{
+    tests: {
         input: string;
         output: string | undefined
-    }]
+    }[]
 };
 export const RELEASE_RULE: ReleaseRuleItem[] = [
     {
@@ -80,16 +80,19 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
     {
         matchVersion: (url: string) => {
             return url.match(
-                /https:\/\/deno\.com\/blog\/(?<version>.+)/
+                /https:\/\/deno\.com\/blog\/v(?<version>.+)/
             );
         },
-        version: ({ match }) => match?.groups?.version,
+        version: ({ match }) => `v${match?.groups?.version}`,
         tests: [{
             input: "https://deno.com/blog/v1.19",
             output: "v1.19"
+        }, {
+            input: "https://deno.com/blog/fastest-git-deploys-to-the-edge",
+            output: undefined
         }],
     },
-    ];
+];
 
 const URL_RULES: RuleItem[] = [
     // GitHub
