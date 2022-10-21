@@ -1,5 +1,5 @@
 import { assert, assertStrictEquals } from "https://deno.land/std@0.130.0/testing/asserts.ts";
-import { getProductName, RELEASE_RULE } from "./lib.ts";
+import { getProductName, RELEASE_RULE, URL_RULES } from "./lib.ts";
 
 Deno.test("getProductName - {name} {ver}リリース", () => {
     const name = getProductName([
@@ -52,6 +52,23 @@ Deno.test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
     assertStrictEquals(name, "jQuery UI");
 });
 
+Deno.test("URL_RULES data", async (t) => {
+    for (const rule of URL_RULES) {
+        const tests = rule.tests ?? []
+        for (const test of tests) {
+            await t.step(test.input + " → " + test.output, () => {
+                const matchRule = rule.match?.(test.input);
+                if (test.output === undefined) {
+                    assertStrictEquals(matchRule, null);
+                    return;
+                }
+                assert(matchRule, "should be matched: " + JSON.stringify(rule));
+                const result = rule.url?.({ url: test.input, match: matchRule });
+                assertStrictEquals(result, test.output);
+            });
+        }
+    }
+})
 Deno.test("RELEASE_RULE data", async (t) => {
     for (const rule of RELEASE_RULE) {
         for (const test of rule.tests) {

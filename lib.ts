@@ -19,6 +19,10 @@ export interface RelatedLinksItem {
 type RuleItem<T extends RegExpMatchArray = RegExpMatchArray> = ({
     match: (url: string) => T | null;
     url: ({ url, match }: { url: string; match: T }) => string;
+    tests?: {
+        input: string;
+        output: string | undefined
+    }[]
 });
 type ReleaseRuleItem<T extends RegExpMatchArray = RegExpMatchArray> = {
     matchVersion: (url: string) => T | null;
@@ -94,21 +98,29 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
     },
 ];
 
-const URL_RULES: RuleItem[] = [
+export const URL_RULES: RuleItem[] = [
     // GitHub
     {
         match: (url: string) => {
             return url.match(/https:\/\/github\.com\/(?<owner>[-\w]+)\/(?<name>[-\w]+)/);
         },
         url: ({ match }) => match[0],
+        tests: [{
+            input: "https://github.com/webpack/webpack/releases/tag/v5.64.2",
+            output: "https://github.com/webpack/webpack"
+        }],
     },
     // gist
     {
         match: (url: string) => {
             // https://gist.github.com/azu/xxx
-            return url.match(/https:\/\/gist.github\.com\/(?<owner>[-\w]+)\//);
+            return url.match(/https:\/\/gist.github\.com\/(?<owner>[^/]+)/);
         },
         url: ({ match }) => match[0],
+        tests: [{
+            input: "https://gist.github.com/azu/xxxx",
+            output: "https://gist.github.com/azu"
+        }],
     },
     // Google+
     // https://plus.google.com/u/0/103969044621963378195/posts/af6Fg972tGQ
