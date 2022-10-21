@@ -6,6 +6,8 @@ Tiny API that provide product/library name for a URL.
 
 - name: product name
 - url: product url
+- releaseNoteVersion: release note version if the target url is release note.
+  - `string | undefined`
 - releaseNoteProbability: Do this url have release notes?
     - 0 - 1
 
@@ -32,7 +34,7 @@ $ curl https://jser-product-name.deno.dev/
 
 ```shell
 $ curl "https://jser-product-name.deno.dev/?url=https://deno.com/blog/v1.19"
-{"name":"Deno","url":"https://deno.com","releaseNoteProbability":0.7857142857142857}%
+{"name":"Deno","url":"https://deno.com","releaseNoteProbability":0.7619047619047619,"releaseNoteVersion":"v1.19"}
 ```
 
 No Data
