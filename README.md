@@ -1,6 +1,8 @@
 # JSer.info Product Name API
 
-Tiny API that provide product/library name for a URL.
+Tiny Web API that provide product/library name for a URL.
+
+This Web API using [JSer.info Dataset](https://github.com/jser/dataset).
 
 ## Response
 
