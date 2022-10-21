@@ -102,6 +102,14 @@ const URL_RULES: RuleItem[] = [
         },
         url: ({ match }) => match[0],
     },
+    // gist
+    {
+        match: (url: string) => {
+            // https://gist.github.com/azu/xxx
+            return url.match(/https:\/\/gist.github\.com\/(?<owner>[-\w]+)\//);
+        },
+        url: ({ match }) => match[0],
+    },
     // Google+
     // https://plus.google.com/u/0/103969044621963378195/posts/af6Fg972tGQ
     {
