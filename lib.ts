@@ -77,6 +77,18 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
             output: "v8.23.0"
         }],
     },
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /https:\/\/deno\.com\/blog\/(?<version>.+)/
+            );
+        },
+        version: ({ match }) => match?.groups?.version,
+        tests: [{
+            input: "https://deno.com/blog/v1.19",
+            output: "v1.19"
+        }],
+    },
     ];
 
 const URL_RULES: RuleItem[] = [

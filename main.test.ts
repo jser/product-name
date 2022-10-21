@@ -59,7 +59,7 @@ Deno.test("RELEASE_RULE data", async (t) => {
                 const matchRule = rule.matchVersion?.(test.input);
                 assert(matchRule, "should be matched: " + JSON.stringify(rule));
                 const result = rule.version?.({ url: test.input, match: matchRule });
-                assertEquals(result, test.output, "should be matched: " + JSON.stringify(rule));
+                assertEquals(result, test.output);
             });
         }
     }
