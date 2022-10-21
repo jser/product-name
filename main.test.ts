@@ -54,7 +54,7 @@ Deno.test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
 
 Deno.test("URL_RULES data", async (t) => {
     for (const rule of URL_RULES) {
-        const tests = rule.tests ?? []
+        const tests = rule.tests ?? [];
         for (const test of tests) {
             await t.step(test.input + " → " + test.output, () => {
                 const matchRule = rule.match?.(test.input);
@@ -68,7 +68,7 @@ Deno.test("URL_RULES data", async (t) => {
             });
         }
     }
-})
+});
 Deno.test("RELEASE_RULE data", async (t) => {
     for (const rule of RELEASE_RULE) {
         for (const test of rule.tests) {
