@@ -13,13 +13,13 @@ Tiny API that provide product/library name for a URL.
 
 ## Usage
 
-Supported All products.
+Get Supported All products.
 
 ```
 curl https://jser-product-name.deno.dev/
 ```
 
-Return a product name for URL
+Get a product name for URL
 
 ```
 curl https://jser-product-name.deno.dev/?url=${url}
