@@ -9,7 +9,8 @@
     "files": {
       "include": [
         "main.ts",
-        "src/"
+        "main.test.ts",
+        "lib.ts"
       ]
     },
     "rules": {
@@ -18,7 +19,9 @@
   "fmt": {
     "files": {
       "include": [
-        "*.ts"
+        "main.ts",
+        "main.test.ts",
+        "lib.ts"
       ]
     },
     "options": {

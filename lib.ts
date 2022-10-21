@@ -16,18 +16,76 @@ export interface RelatedLinksItem {
 }
 
 // Match → title and url
-type RuleItem<T extends RegExpMatchArray = RegExpMatchArray> = {
+type RuleItem<T extends RegExpMatchArray = RegExpMatchArray> = ({
     match: (url: string) => T | null;
-    // title: ({ item, match }: { url: string; match: T }) => string;
     url: ({ url, match }: { url: string; match: T }) => string;
+});
+type ReleaseRuleItem<T extends RegExpMatchArray = RegExpMatchArray> = {
+    matchVersion: (url: string) => T | null;
+    version: ({ url, match }: { url: string; match: T }) => string | undefined;
+    tests: [{
+        input: string;
+        output: string | undefined
+    }]
 };
+export const RELEASE_RULE: ReleaseRuleItem[] = [
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /^https:\/\/github\.com\/(?<owner>[^/])+\/(?<repo>[^/])+\/releases\/tag\/(?<version>[^/]+)/
+            );
+        },
+        version: ({ match }) => match?.groups?.version,
+        tests: [{
+            input: "https://github.com/webpack/webpack/releases/tag/v5.64.2",
+            output: "v5.64.2"
+        }],
+    },
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /^https:\/\/nodejs\.org\/(?<lang>[^/])+\/blog\/release\/(?<version>[^/]+)/
+            );
+        },
+        version: ({ match }) => match?.groups?.version,
+        tests: [{
+            input: "https://nodejs.org/en/blog/release/v18.9.1/",
+            output: "v18.9.1"
+        }],
+    },
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /https:\/\/webkit\.org\/blog\/\d+\/release-notes-for-safari-technology-preview-(?<version>\d+)\//
+            );
+        },
+        version: ({ match }) => match?.groups?.version,
+        tests: [{
+            input: "https://webkit.org/blog/13394/release-notes-for-safari-technology-preview-156/",
+            output: "156"
+        }],
+    },
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /https:\/\/eslint\.org\/blog\/([^/])+\/([^/])+\/eslint-v(?<version>[\d.]+)-released\//
+            );
+        },
+        version: ({ match }) => `v${match?.groups?.version}`,
+        tests: [{
+            input: "https://eslint.org/blog/2022/08/eslint-v8.23.0-released/",
+            output: "v8.23.0"
+        }],
+    },
+    ];
+
 const URL_RULES: RuleItem[] = [
     // GitHub
     {
         match: (url: string) => {
             return url.match(/https:\/\/github\.com\/(?<owner>[-\w]+)\/(?<name>[-\w]+)/);
         },
-        url: ({ match }) => match[0]
+        url: ({ match }) => match[0],
     },
     // Google+
     // https://plus.google.com/u/0/103969044621963378195/posts/af6Fg972tGQ
@@ -115,7 +173,9 @@ const URL_RULES: RuleItem[] = [
             return url.match(/https:\/\/(www\d)\.slideshare\.net\/(?<name>[-\w]+)\//);
         },
         url: ({ match }) => match[0]
-    }
+    },
+
+    //
 ];
 
 const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
@@ -128,9 +188,9 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
 
 export const getUniqueUrl = (url: string) => {
     for (const rule of URL_RULES) {
-        const matchRule = rule.match(url);
+        const matchRule = rule.match?.(url);
         if (matchRule) {
-            return rule.url({ url, match: matchRule });
+            return rule.url?.({ url, match: matchRule });
         }
     }
     // default
@@ -197,7 +257,26 @@ export const fetchItems = (): Promise<JserItem[]> => {
             return res.json();
         })
 }
-export const getAllProductNames = (items: JserItem[]) => {
+
+export const getReleaseNoteVersion = (currentUrl: string): string | undefined => {
+    for (const rule of RELEASE_RULE) {
+        const matchRule = rule.matchVersion?.(currentUrl);
+        if (matchRule) {
+            return rule.version?.({ url: currentUrl, match: matchRule });
+        }
+    }
+    return;
+}
+
+export type Product = {
+    name: string;
+    url: string;
+    // "v1.0.0" | optional
+    releaseNoteVersion: string | undefined;
+    // 0 - 1
+    releaseNoteProbability: number;
+}
+export const getAllProducts = (items: JserItem[]): Omit<Product, "releaseNoteVersion">[] => {
     const groupByUrl = groupBy(items, item => {
         return getUniqueUrl(item.url);
     });
