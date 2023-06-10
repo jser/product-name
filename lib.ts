@@ -94,18 +94,6 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
             output: undefined,
         }],
     },
-    {
-        matchVersion: (url: string) => {
-            return url.match(
-                /https:\/\/babeljs\.io\/blog\/\d+\/\d+\/\d+\/(?<version>[\d.]+)/,
-            );
-        },
-        version: ({ match }) => `v${match?.groups?.version}`,
-        tests: [{
-            input: "https://babeljs.io/blog/2022/10/27/7.20.0",
-            output: "v7.20.0",
-        }],
-    },
 ];
 
 export const URL_RULES: RuleItem[] = [
