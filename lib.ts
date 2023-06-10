@@ -82,7 +82,19 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
     {
         matchVersion: (url: string) => {
             return url.match(
-                /https:\/\/deno\.com\/blog\/v(?<version>[\d.]+)/,
+                /https:\/\/babeljs\.io\/blog\/\d+\/\d+\/\d+\/(?<version>[\d.]+)/,
+            );
+        },
+        version: ({ match }) => `v${match?.groups?.version}`,
+        tests: [{
+            input: "https://babeljs.io/blog/2022/10/27/7.20.0",
+            output: "v7.20.0",
+        }],
+    },
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /https:\/\/.+\/.*?v(?<version>[\d.]+)/,
             );
         },
         version: ({ match }) => `v${match?.groups?.version}`,
@@ -90,6 +102,9 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
             input: "https://deno.com/blog/v1.19",
             output: "v1.19",
         }, {
+            input: "https://bun.sh/blog/bun-v0.6.8",
+            output: "v0.6.8",
+        },{
             input: "https://deno.com/blog/fastest-git-deploys-to-the-edge",
             output: undefined,
         }],
