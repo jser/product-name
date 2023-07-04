@@ -46,6 +46,10 @@ $ curl "https://jser-product-name.deno.dev/?url=https://example.com
 null # status code is 400
 ```
 
+## Develop
+
+  make run
+
 ## Related
 
 - [jser/dataset: JSer.infoのデータセットや処理ライブラリ](https://github.com/jser/dataset)
