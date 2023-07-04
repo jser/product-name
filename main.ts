@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.126.0/http/server.ts";
 import { fetchItems, getAllProducts, getReleaseNoteVersion, getUniqueUrl, Product } from "./lib.ts";
 
-serve(async (req) => {
+await serve(async (req) => {
     const items = await fetchItems();
     const allProducts = getAllProducts(items);
     const targetUrl = new URL(req.url).searchParams.get("url");
@@ -9,8 +9,8 @@ serve(async (req) => {
         const targetSearchUrl = getUniqueUrl(targetUrl);
         const targetProduct = allProducts.find((product) => targetSearchUrl === product.url);
         if (!targetProduct) {
-            return new Response(null, {
-                status: 400,
+            return new Response("Not Found this product", {
+                status: 404,
             });
         }
         const targetReleaseNoteVersion = getReleaseNoteVersion(targetUrl);
