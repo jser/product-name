@@ -50,6 +50,10 @@ null # status code is 400
 
   make run
 
+## Test
+
+  make test
+
 ## Related
 
 - [jser/dataset: JSer.infoのデータセットや処理ライブラリ](https://github.com/jser/dataset)

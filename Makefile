@@ -1,4 +1,7 @@
 run:
 	deno run --watch --allow-net main.ts
 
-.PHONY: run
+test:
+    deno test --allow-net
+
+.PHONY: run test
