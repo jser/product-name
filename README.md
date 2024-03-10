@@ -42,7 +42,7 @@ $ curl "https://jser-product-name.deno.dev/?url=https://deno.com/blog/v1.19"
 No Data
 
 ```shell
-$ curl "https://jser-product-name.deno.dev/?url=https://example.com
+$ curl "https://jser-product-name.deno.dev/?url=https://example.com"
 null # status code is 400
 ```
 
