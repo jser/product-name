@@ -109,6 +109,23 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
             output: undefined,
         }],
     },
+    {
+        matchVersion: (url: string) => {
+            return url.match(
+                /https:\/\/.+\/.*?v(?<version>[\d.-]+)/,
+            );
+        },
+        version: ({ match }) => {
+            return `v${match?.groups?.version?.replaceAll("-", ".")}`;
+        },
+        tests: [{
+            input: "https://biomejs.dev/blog/biome-v1-6/",
+            output: "v1.6",
+        },{
+            input: "https://example.com/voooo1-6",
+            output: undefined,
+        }],
+    },
 ];
 
 export const URL_RULES: RuleItem[] = [
