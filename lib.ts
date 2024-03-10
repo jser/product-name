@@ -91,24 +91,7 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
             output: "v7.20.0",
         }],
     },
-    {
-        matchVersion: (url: string) => {
-            return url.match(
-                /https:\/\/.+\/.*?v(?<version>[\d.]+)/,
-            );
-        },
-        version: ({ match }) => `v${match?.groups?.version}`,
-        tests: [{
-            input: "https://deno.com/blog/v1.19",
-            output: "v1.19",
-        }, {
-            input: "https://bun.sh/blog/bun-v0.6.8",
-            output: "v0.6.8",
-        },{
-            input: "https://deno.com/blog/fastest-git-deploys-to-the-edge",
-            output: undefined,
-        }],
-    },
+    // Universal Match
     {
         matchVersion: (url: string) => {
             return url.match(
@@ -116,13 +99,23 @@ export const RELEASE_RULE: ReleaseRuleItem[] = [
             );
         },
         version: ({ match }) => {
-            return `v${match?.groups?.version?.replaceAll("-", ".")}`;
+            // if - is included, it should be replaced with .
+            return `v${match?.groups?.version.replaceAll("-", ".")}`;
         },
         tests: [{
+            input: "https://deno.com/blog/v1.19",
+            output: "v1.19",
+        }, {
+            input: "https://bun.sh/blog/bun-v0.6.8",
+            output: "v0.6.8",
+        }, {
             input: "https://biomejs.dev/blog/biome-v1-6/",
             output: "v1.6",
-        },{
+        }, {
             input: "https://example.com/voooo1-6",
+            output: undefined,
+        }, {
+            input: "https://deno.com/blog/fastest-git-deploys-to-the-edge",
             output: undefined,
         }],
     },
