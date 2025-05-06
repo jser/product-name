@@ -9,7 +9,7 @@ await serve(async (req) => {
         const targetSearchUrl = getUniqueUrl(targetUrl);
         const targetProduct = allProducts.find((product) => targetSearchUrl === product.url);
         if (!targetProduct) {
-            return new Response("Not Found this product", {
+            return new Response(null, {
                 status: 404,
             });
         }
