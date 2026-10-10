@@ -15,37 +15,36 @@ This Web API uses [JSer.info Dataset](https://github.com/jser/dataset) and runs 
 
 ## Usage
 
-The examples below use the local development server. After deploying, replace
-`http://localhost:8000` with the URL printed by Wrangler.
+The API is available at `https://product-name.jser.workers.dev/`.
 
 Get Supported All products.
 
 ```
-curl http://localhost:8000/
+curl https://product-name.jser.workers.dev/
 ```
 
 Get a product name for URL
 
 ```
-curl "http://localhost:8000/?url=${url}"
+curl "https://product-name.jser.workers.dev/?url=${url}"
 ```
 
 ## Example
 
 ```shell
-$ curl http://localhost:8000/
+$ curl https://product-name.jser.workers.dev/
 [{"name":"jQuery Mobile","url":"http://jquerymobile.com"},{"name":"jQuery","url":"http://blog.jquery.com"},{"name":"Node","url":"http://blog.nodejs.org"},{"name":"Bootstrap","url":"http://blog.getbootstrap.com"}, ...]
 ```
 
 ```shell
-$ curl "http://localhost:8000/?url=https://deno.com/blog/v1.19"
+$ curl "https://product-name.jser.workers.dev/?url=https://deno.com/blog/v1.19"
 {"name":"Deno","url":"https://deno.com","releaseNoteProbability":0.7619047619047619,"releaseNoteVersion":"v1.19"}
 ```
 
 No Data
 
 ```shell
-$ curl "http://localhost:8000/?url=https://example.com"
+$ curl "https://product-name.jser.workers.dev/?url=https://example.com"
 null # status code is 404
 ```
 
@@ -78,8 +77,8 @@ pnpm exec wrangler login
 pnpm deploy
 ```
 
-Wrangler deploys the `jser-product-name` Worker to the selected Cloudflare account
-and prints its public URL. Update API clients to use that URL; the previous
+Wrangler deploys the `product-name` Worker to the Cloudflare account with the
+`jser.workers.dev` subdomain. Update API clients to use its public URL; the previous
 `deno.dev` address cannot be served by Cloudflare Workers.
 
 For [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/),
