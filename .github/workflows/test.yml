@@ -6,16 +6,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        deno-version: [ 1.25.3 ]
-
+    permissions:
+      contents: read
     steps:
-      - name: Git Checkout Deno Module
-        uses: actions/checkout@v3
-      - name: Use Deno Version ${{ matrix.deno-version }}
-        uses: denolib/setup-deno@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          deno-version: ${{ matrix.deno-version }}
-      - name: Test Deno Module
-        run: deno test
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build

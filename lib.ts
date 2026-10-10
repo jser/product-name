@@ -350,5 +350,5 @@ export const getAllProducts = (items: JserItem[]): Omit<Product, "releaseNoteVer
             url: origin,
             releaseNoteProbability,
         }];
-    }).filter((p) => Boolean(p.name));
+    }).filter((p): p is Omit<Product, "releaseNoteVersion"> => Boolean(p.name));
 };

@@ -1,7 +1,7 @@
-import { serve } from "https://deno.land/std@0.126.0/http/server.ts";
-import { fetchItems, getAllProducts, getReleaseNoteVersion, getUniqueUrl, Product } from "./lib.ts";
+import { fetchItems, getAllProducts, getReleaseNoteVersion, getUniqueUrl } from "./lib.ts";
+import type { Product } from "./lib.ts";
 
-await serve(async (req) => {
+const handleRequest = async (req: Request): Promise<Response> => {
     const items = await fetchItems();
     const allProducts = getAllProducts(items);
     const targetUrl = new URL(req.url).searchParams.get("url");
@@ -26,6 +26,8 @@ await serve(async (req) => {
             headers: { "content-type": "application/json" },
         });
     }
-});
+};
 
-console.log("http://localhost:8000");
+export default {
+    fetch: handleRequest,
+};

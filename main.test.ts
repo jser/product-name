@@ -1,7 +1,8 @@
-import { assert, assertStrictEquals } from "https://deno.land/std@0.130.0/testing/asserts.ts";
+import { ok as assert, strictEqual as assertStrictEquals } from "node:assert";
+import { test } from "node:test";
 import { getProductName, RELEASE_RULE, URL_RULES } from "./lib.ts";
 
-Deno.test("getProductName - {name} {ver}リリース", () => {
+test("getProductName - {name} {ver}リリース", () => {
     const name = getProductName([
         {
             date: "2021-10-17T15:48:46.120Z",
@@ -23,7 +24,7 @@ Deno.test("getProductName - {name} {ver}リリース", () => {
     ]);
     assertStrictEquals(name, "Nuxt");
 });
-Deno.test("getProductName - {name} {ver}-alpha|betaリリース", () => {
+test("getProductName - {name} {ver}-alpha|betaリリース", () => {
     const name = getProductName([
         {
             date: "2022-01-29T14:18:59.905Z",
@@ -37,7 +38,7 @@ Deno.test("getProductName - {name} {ver}-alpha|betaリリース", () => {
     ]);
     assertStrictEquals(name, "Nightwatch");
 });
-Deno.test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
+test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
     const name = getProductName([
         {
             date: "2021-09-04T12:29:57.045Z",
@@ -52,11 +53,11 @@ Deno.test("getProductName - {name} {ver}-rc.{ver}リリース", () => {
     assertStrictEquals(name, "jQuery UI");
 });
 
-Deno.test("URL_RULES data", async (t) => {
+test("URL_RULES data", async (t) => {
     for (const rule of URL_RULES) {
         const tests = rule.tests ?? [];
         for (const test of tests) {
-            await t.step(test.input + " → " + test.output, () => {
+            await t.test(test.input + " → " + test.output, () => {
                 const matchRule = rule.match?.(test.input);
                 if (test.output === undefined) {
                     assertStrictEquals(matchRule, null);
@@ -69,10 +70,10 @@ Deno.test("URL_RULES data", async (t) => {
         }
     }
 });
-Deno.test("RELEASE_RULE data", async (t) => {
+test("RELEASE_RULE data", async (t) => {
     for (const rule of RELEASE_RULE) {
         for (const test of rule.tests) {
-            await t.step(test.input + " → " + test.output, () => {
+            await t.test(test.input + " → " + test.output, () => {
                 const matchRule = rule.matchVersion?.(test.input);
                 if (test.output === undefined) {
                     assertStrictEquals(matchRule, null);

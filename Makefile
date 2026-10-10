@@ -1,7 +1,7 @@
 run:
-	deno run --watch --allow-net main.ts
+	pnpm dev
 
 test:
-	deno test --allow-net
+	pnpm test
 
 .PHONY: run test
